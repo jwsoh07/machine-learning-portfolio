@@ -7,7 +7,7 @@ import supervised_learning.kth_nearest_neighbours
 # Sidebar
 with st.sidebar:
     st.subheader("Types of Machine Learning")
-    st.session_state.option = sac.menu(
+    st.session_state.selected_model = sac.menu(
         [
             sac.MenuItem(
                 "Supervised Learning",
@@ -21,7 +21,7 @@ with st.sidebar:
                 "Unsupervised Learning",
                 children=[
                     sac.MenuItem(
-                        "sadd",
+                        "Placeholder",
                     ),
                 ],
             ),
@@ -29,11 +29,12 @@ with st.sidebar:
                 "Reinforcement Learning",
                 children=[
                     sac.MenuItem(
-                        "sadd",
+                        "Placeholder",
                     ),
                 ],
             ),
         ]
     )
 
-supervised_learning.kth_nearest_neighbours.iris_flower_classification()
+if st.session_state.selected_model == "k-Nearest Neighbors (k-NN)":
+    supervised_learning.kth_nearest_neighbours.iris_flower_classification()
