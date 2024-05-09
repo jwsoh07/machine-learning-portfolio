@@ -1,0 +1,50 @@
+# Compiled Python files and cache directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+.environment/
+ENV/
+
+# Editor files
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+*.idea/
+
+# macOS-specific files
+.DS_Store
+
+# Other temporary files and directories
+*.log
+*.tmp
+*.cache
+*.bak
+*.old
+*.orig
+
+# Python build files
+build/
+dist/
+*.egg-info/
+
+# Pytest cache and other cache directories
+.pytest_cache/
+.cache/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Test coverage data
+htmlcov/
+.tox/
+.nox/
+
+# Miscellaneous
+# Add any other files and directories you don't want to include in your repository
