@@ -134,3 +134,32 @@ def iris_flower_classification():
     This visualization helps us understand how the features are distributed across the different species.
     """
     )
+
+    # Real-time Predictions
+    st.header("Real-time Predictions")
+
+    # Create sliders for user input
+    st.subheader("Input feature values")
+    input_data = []
+    for feature_name in feature_names:
+        value = st.slider(
+            f"{feature_name}:",
+            min_value=float(X.min(axis=0)[feature_names.index(feature_name)]),
+            max_value=float(X.max(axis=0)[feature_names.index(feature_name)]),
+            step=0.1,
+            value=(X.mean(axis=0)[feature_names.index(feature_name)]),
+        )
+        input_data.append(value)
+
+    # Convert the input data to a numpy array and standardize it
+    input_data = np.array(input_data).reshape(1, -1)
+    input_data = scaler.transform(input_data)
+
+    # Make predictions using the trained model
+    predicted_class = knn.predict(input_data)
+
+    # Display the predicted class
+    st.subheader("Predicted Class")
+    st.write(
+        f"The predicted class for the input data is: **{target_names[predicted_class][0]}**"
+    )
