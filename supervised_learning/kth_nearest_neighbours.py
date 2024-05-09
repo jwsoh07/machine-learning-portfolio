@@ -163,3 +163,7 @@ def iris_flower_classification():
     st.write(
         f"The predicted class for the input data is: **{target_names[predicted_class][0]}**"
     )
+    st.image(
+        f"images/{target_names[predicted_class][0]}.jpeg",
+        caption="Sunrise by the mountains",
+    )
