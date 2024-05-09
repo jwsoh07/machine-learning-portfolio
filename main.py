@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit_antd_components as sac
 
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
@@ -11,6 +12,37 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Sidebar
+with st.sidebar:
+    st.subheader("Types of Machine Learning")
+    st.session_state.option = sac.menu(
+        [
+            sac.MenuItem(
+                "Supervised Learning",
+                children=[
+                    sac.MenuItem(
+                        "k-Nearest Neighbors (k-NN)",
+                    ),
+                ],
+            ),
+            sac.MenuItem(
+                "Unsupervised Learning",
+                children=[
+                    sac.MenuItem(
+                        "sadd",
+                    ),
+                ],
+            ),
+            sac.MenuItem(
+                "Reinforcement Learning",
+                children=[
+                    sac.MenuItem(
+                        "sadd",
+                    ),
+                ],
+            ),
+        ]
+    )
 
 # build a model for classifying iris flowers into one of the three species
 
