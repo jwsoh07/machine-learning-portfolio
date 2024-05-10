@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from sklearn.utils import resample
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, classification_report
@@ -75,6 +76,12 @@ def fraud_detection():
     A significant difference between the counts of class 0 (normal) and class 1 (fraudulent) indicates a class imbalance, which is common in fraud detection datasets. This means that there are far more normal transactions than fraudulent ones.
 
     Class imbalance can impact the performance of machine learning models, as they may become biased towards predicting the majority class (normal transactions) more frequently. This makes it important to account for class imbalance when training a model for fraud detection.
+
+    In this case, 'Downsampling' technique has been used to maintain the performance of the machine learning model.
+
+    Downsampling is a technique used to balance class distribution in datasets where one class is significantly larger than the other(s). 
+    
+    This is particularly important when working with imbalanced datasets in machine learning, such as the credit card fraud detection dataset, where the majority of transactions are normal and only a small fraction are fraudulent.
     """
     )
 
@@ -88,20 +95,39 @@ def fraud_detection():
     # Check data distribution (class imbalance)
     st.write(data["Class"].value_counts())
 
+    # Create a Balanced Dataset due to class imbalance using Downsampling
+    normal_transactions = data[data["Class"] == 0]
+    fraudulent_transactions = data[data["Class"] == 1]
+
+    # Downsample the majority class to match the size of the minority class
+    downsampled_normal_transactions = normal_transactions.sample(
+        n=len(fraudulent_transactions)
+    )
+
+    # Combine the downsampled majority class and the minority class
+    balanced_dataset = pd.concat(
+        [
+            downsampled_normal_transactions,
+            fraudulent_transactions,
+        ],
+        axis=0,
+    )
+
     # Define features (X) and target (y)
-    X = data.drop(columns=["Class"])
-    y = data["Class"]
+    X = balanced_dataset.drop(columns=["Class"])
+    y = balanced_dataset["Class"]
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
         test_size=0.2,
-        random_state=42,
+        stratify=y,
+        random_state=2,
     )
 
     # Initialize the logistic regression model
-    model = LogisticRegression(max_iter=4000)
+    model = LogisticRegression(max_iter=100)
 
     # Train the model
     model.fit(X_train, y_train)
