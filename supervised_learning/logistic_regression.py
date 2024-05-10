@@ -13,6 +13,37 @@ from sklearn.metrics import confusion_matrix, classification_report
 def fraud_detection():
     # Main title of the page
     st.title("Fraud Detection with Logistic Regression")
+
+    st.subheader("Introduction:")
+    st.write(
+        """
+    In this application, we use a logistic regression model to predict fraudulent transactions based on the Kaggle Credit Card Fraud Detection dataset. Logistic regression is a binary classification algorithm that models the probability of an input belonging to a particular class (normal or fraudulent).
+
+    The model uses the following equation to calculate the probability \( p \) of a transaction being fraudulent:
+    """
+    )
+
+    # Display the logistic regression equation using st.latex
+    st.latex(
+        r"""
+    p = \sigma(w^T x + b) = \frac{1}{1 + e^{-(w^T x + b)}}
+    """
+    )
+
+    # Explanation of the equation
+    st.write(
+        """
+    Where:
+    - \( p \) is the probability of a transaction being fraudulent.
+    - \( \sigma \) is the logistic (or sigmoid) function, which maps the linear combination \( z = w^T x + b \) to a probability between 0 and 1.
+    - \( w^T \) is the transpose of the weight vector, representing the model's learned weights for each feature in the input data \( x \).
+    - \( x \) is the input feature vector.
+    - \( b \) is the bias term, representing the model's learned bias.
+
+    The model uses a decision threshold (e.g., 0.5) to classify transactions as normal or fraudulent based on the calculated probability.
+    """
+    )
+
     # Load the Credit Card Fraud Detection dataset from Kaggle
     # URL to download the dataset: https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
 
