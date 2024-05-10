@@ -8,32 +8,34 @@ def artificial_use_case():
     st.title("Moving Average Visualization with Real Financial Data")
 
     # Table of the top 10 Singaporean companies with their names and ticker symbols
-    ten_singapore_companies = pd.DataFrame({
-        "Company Name": [
-            "DBS Group Holdings Ltd",
-            "Oversea-Chinese Banking Corporation Ltd",
-            "United Overseas Bank Ltd",
-            "Singapore Telecommunications Limited",
-            "CapitaLand Integrated Commercial Trust",
-            "Singapore Exchange Limited",
-            "Singapore Airlines Limited",
-            "Keppel Corporation Limited",
-            "CapitaLand Group",
-            "Wilmar International Limited"
-        ],
-        "Ticker Symbol": [
-            "D05.SI",
-            "O39.SI",
-            "U11.SI",
-            "Z74.SI",
-            "C38U.SI",
-            "S68.SI",
-            "C6L.SI",
-            "BN4.SI",
-            "C31.SI",
-            "F34.SI"
-        ]
-    })
+    ten_singapore_companies = pd.DataFrame(
+        {
+            "Company Name": [
+                "DBS Group Holdings Ltd",
+                "Oversea-Chinese Banking Corporation Ltd",
+                "United Overseas Bank Ltd",
+                "Singapore Telecommunications Limited",
+                "CapitaLand Integrated Commercial Trust",
+                "Singapore Exchange Limited",
+                "Singapore Airlines Limited",
+                "Keppel Corporation Limited",
+                "CapitaLand Group",
+                "Wilmar International Limited",
+            ],
+            "Ticker Symbol": [
+                "D05.SI",
+                "O39.SI",
+                "U11.SI",
+                "Z74.SI",
+                "C38U.SI",
+                "S68.SI",
+                "C6L.SI",
+                "BN4.SI",
+                "C31.SI",
+                "F34.SI",
+            ],
+        }
+    )
 
     # Display the table of the top 10 Singaporean companies with their names and ticker symbols
     st.subheader("Some Companies of Singapore Origin")
@@ -48,7 +50,6 @@ def artificial_use_case():
 
     # Display the company name
     st.subheader(f"Company: {company_name}")
-
 
     start_date = st.date_input("Start Date", value=pd.Timestamp("2023-01-01"))
     end_date = st.date_input("End Date", value=pd.Timestamp("2024-01-01"))
@@ -76,7 +77,10 @@ def artificial_use_case():
 
     # Plot the original data
     ax.plot(
-        data.index, data["Close"], label="Original Data (Close Price)", color="blue"
+        data.index,
+        data["Close"],
+        label="Original Data (Close Price)",
+        color="blue",
     )
 
     # Plot the Simple Moving Average if toggle is on
@@ -104,13 +108,16 @@ def artificial_use_case():
     # Explanation for the plot
     st.subheader("Explanation:")
     st.write(
-        """
-    The plot above shows the original stock price data (in blue), with optional Simple Moving Average (SMA) in red and Exponential Moving Average (EMA) in green based on the selected window size.
-    - You can toggle the display of SMA and EMA on and off using the checkboxes above the plot.
-    - SMA smooths out short-term fluctuations and helps identify underlying trends.
-    - EMA gives more weight to recent data points, making it more responsive to recent changes in the data.
+        f"The plot above shows the original close price data for {company_name} (in blue), with optional Simple Moving Average (SMA) in red and Exponential Moving Average (EMA) in green based on the selected window size."
+    )
 
-    Adjusting the window size and toggles allows you to observe how different window sizes and moving averages affect the data representation.
+    # Explanation of SMA and EMA
+    st.write(
+        """
+    - **Simple Moving Average (SMA)** is a method of smoothing out price data by calculating the average of a stock's closing prices over a specified number of days. SMA helps identify trends by reducing short-term fluctuations and providing a clearer picture of the underlying trend in the stock's price.
+    - **Exponential Moving Average (EMA)** is another method of smoothing out price data, but it gives more weight to recent prices, making it more responsive to recent changes in the data. EMA can be useful for identifying trends more quickly compared to SMA.
+
+    Both SMA and EMA are plotted on the chart to give you a visual representation of the stock's performance over time. By toggling the checkboxes above the plot, you can choose whether to display SMA and EMA and adjust the window size to see how different settings impact the trends shown on the chart.
     """
     )
 
@@ -120,8 +127,10 @@ def artificial_use_case():
 
     # Explanation for the data table
     st.write(
+        f"This data table shows the date range, original close prices, Simple Moving Average (SMA), and Exponential Moving Average (EMA) for {company_name}."
+    )
+    st.write(
         """
-    This data table shows the date range, original close prices, Simple Moving Average (SMA), and Exponential Moving Average (EMA) for each date in the series.
     The SMA and EMA columns display the calculated averages based on the selected window size.
     """
     )
