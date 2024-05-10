@@ -1,7 +1,6 @@
 import streamlit as st
 
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -79,9 +78,6 @@ def fraud_detection():
     """
     )
 
-    # Check data distribution (class imbalance)
-    st.write(data["Class"].value_counts())
-
     # Visualize the distribution of classes (normal vs fraudulent)
     sns.countplot(x="Class", data=data)
     plt.title("Distribution of Normal and Fraudulent Transactions")
@@ -89,17 +85,23 @@ def fraud_detection():
     plt.xticks([0, 1], ["Normal", "Fraudulent"])
     st.pyplot(plt)
 
+    # Check data distribution (class imbalance)
+    st.write(data["Class"].value_counts())
+
     # Define features (X) and target (y)
     X = data.drop(columns=["Class"])
     y = data["Class"]
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
+        X,
+        y,
+        test_size=0.2,
+        random_state=42,
     )
 
     # Initialize the logistic regression model
-    model = LogisticRegression(max_iter=1000)
+    model = LogisticRegression(max_iter=4000)
 
     # Train the model
     model.fit(X_train, y_train)
