@@ -10,16 +10,16 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, classification_report
 
 
-def fraud_detection():
+def credit_card_fraud_detection():
     # Main title of the page
-    st.title("Fraud Detection with Logistic Regression")
+    st.title("Credit Card Fraud Detection with Logistic Regression")
 
     st.subheader("Introduction:")
     st.write(
         """
     In this application, we use a logistic regression model to predict fraudulent transactions based on the Kaggle Credit Card Fraud Detection dataset. Logistic regression is a binary classification algorithm that models the probability of an input belonging to a particular class (normal or fraudulent).
 
-    The model uses the following equation to calculate the probability \( p \) of a transaction being fraudulent:
+    The model uses the following mathematical equation to calculate the probability \( p \) of a transaction being fraudulent:
     """
     )
 
@@ -73,7 +73,8 @@ def fraud_detection():
         """
     The data distribution shown above displays the counts of transactions labeled as normal (class 0) and fraudulent (class 1) in the dataset.
 
-    A significant difference between the counts of class 0 (normal) and class 1 (fraudulent) indicates a class imbalance, which is common in fraud detection datasets. This means that there are far more normal transactions than fraudulent ones.
+    A significant difference between the counts of class 0 (normal) and class 1 (fraudulent) indicates a class imbalance, which is common in 
+    fraud detection datasets. This means that there are far more normal transactions than fraudulent ones (see bar chart below).
 
     Class imbalance can impact the performance of machine learning models, as they may become biased towards predicting the majority class (normal transactions) more frequently. This makes it important to account for class imbalance when training a model for fraud detection.
 
@@ -105,10 +106,14 @@ def fraud_detection():
     model = LogisticRegression(max_iter=100)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
-    classification_rep = classification_report(y_test, y_pred)
+    classification_rep = classification_report(y_test, y_pred, output_dict=True)
 
     st.subheader("Classification Report")
-    st.write(classification_rep)
+    # Render the classification report DataFrame as a table
+    classification_df = pd.DataFrame(classification_rep).transpose()
+    st.table(classification_df)
+
+    
     st.write("Explanation:")
     st.write(
         """
@@ -126,13 +131,11 @@ def fraud_detection():
     """
     )
 
-    st.subheader("Confusion Matrix:")
     # Evaluate the model using confusion matrix and classification report
     conf_matrix = confusion_matrix(y_test, y_pred)
-    st.write(conf_matrix)
 
     # Plot the confusion matrix as a heatmap
-    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues")
+    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=['Predicted Normal', 'Predicted Fraudulent'], yticklabels=['Normal', 'Fraudulent'])
     plt.title("Confusion Matrix Heatmap")
     st.pyplot(plt)
 
