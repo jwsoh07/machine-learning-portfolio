@@ -48,7 +48,6 @@ with st.sidebar:
             ),
         ]
     )
-
 if st.session_state.selected_model == "Moving Average":
     time_series_analysis.moving_average.artificial_use_case()
 
@@ -56,4 +55,4 @@ if st.session_state.selected_model == "k-Nearest Neighbors (k-NN)":
     supervised_learning.kth_nearest_neighbours.iris_flower_classification()
 
 if st.session_state.selected_model == "Logistic Regression":
-    supervised_learning.logistic_regression.fraud_detection()
+    supervised_learning.logistic_regression.credit_card_fraud_detection()
