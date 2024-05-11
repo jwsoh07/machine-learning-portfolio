@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from sklearn.utils import resample
+from sklearn.preprocessing import RobustScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, classification_report
@@ -84,40 +84,16 @@ def fraud_detection():
     This is particularly important when working with imbalanced datasets in machine learning, such as the credit card fraud detection dataset, where the majority of transactions are normal and only a small fraction are fraudulent.
     """
     )
-
     # Visualize the distribution of classes (normal vs fraudulent)
     sns.countplot(x="Class", data=data)
     plt.title("Distribution of Normal and Fraudulent Transactions")
-    # Customize the x-axis labels to display "Normal" and "Fraudulent"
     plt.xticks([0, 1], ["Normal", "Fraudulent"])
     st.pyplot(plt)
 
-    # Check data distribution (class imbalance)
-    st.write(data["Class"].value_counts())
+    preprocessed_data = preprocess_data(data)
+    balanced_dataset = create_balanced_dataset(preprocessed_data)
+    X, y = get_features_and_target(balanced_dataset)
 
-    # Create a Balanced Dataset due to class imbalance using Downsampling
-    normal_transactions = data[data["Class"] == 0]
-    fraudulent_transactions = data[data["Class"] == 1]
-
-    # Downsample the majority class to match the size of the minority class
-    downsampled_normal_transactions = normal_transactions.sample(
-        n=len(fraudulent_transactions)
-    )
-
-    # Combine the downsampled majority class and the minority class
-    balanced_dataset = pd.concat(
-        [
-            downsampled_normal_transactions,
-            fraudulent_transactions,
-        ],
-        axis=0,
-    )
-
-    # Define features (X) and target (y)
-    X = balanced_dataset.drop(columns=["Class"])
-    y = balanced_dataset["Class"]
-
-    # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
@@ -126,15 +102,9 @@ def fraud_detection():
         random_state=2,
     )
 
-    # Initialize the logistic regression model
     model = LogisticRegression(max_iter=100)
-
-    # Train the model
     model.fit(X_train, y_train)
-
-    # Make predictions on the testing data
     y_pred = model.predict(X_test)
-
     classification_rep = classification_report(y_test, y_pred)
 
     st.subheader("Classification Report")
@@ -179,3 +149,48 @@ def fraud_detection():
     A well-performing model will have high values in the top left and bottom right cells, indicating accurate predictions for both normal and fraudulent transactions.
     """
     )
+
+
+def preprocess_data(data):
+    """
+    Preprocesses the data for optimal performance when the output data is fed to the logistics regression model.
+
+    Steps:
+    # 1. Performs robust scaling to transform the 'Amount' column
+    # 2. Normalise the 'Time' column
+    """
+    preprocessed_data = data.copy()
+    preprocessed_data["Amount"] = RobustScaler().fit_transform(
+        preprocessed_data["Amount"].to_numpy().reshape(-1, 1)
+    )
+    time = preprocessed_data["Time"]
+    preprocessed_data["Time"] = (time - time.min()) / (time.max() - time.min())
+
+    preprocessed_data = preprocessed_data.sample(frac=1, random_state=1)
+    return preprocessed_data
+
+
+def create_balanced_dataset(data):
+    normal_transactions = data[data["Class"] == 0]
+    fraudulent_transactions = data[data["Class"] == 1]
+    # Downsample the majority class to match the size of the minority class
+    downsampled_normal_transactions = normal_transactions.sample(
+        n=len(fraudulent_transactions)
+    )
+
+    # Combine the downsampled majority class and the minority class
+    balanced_dataset = pd.concat(
+        [
+            downsampled_normal_transactions,
+            fraudulent_transactions,
+        ],
+        axis=0,
+    )
+
+    return balanced_dataset
+
+
+def get_features_and_target(data):
+    X = data.drop(columns=["Class"])
+    y = data["Class"]
+    return X, y    
