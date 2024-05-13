@@ -14,10 +14,21 @@ def credit_card_fraud_detection():
     # Main title of the page
     st.title("Credit Card Fraud Detection with Logistic Regression")
 
+    st.subheader("Motivation:")
+    st.write(
+        """
+        As an aspiring professional seeking opportunities within the financial sector, I understand the critical importance of 
+        maintaining trust and security in financial transactions. The prevalence of credit card fraud poses significant risks 
+        not only to financial institutions but also to individual consumers.
+        """
+    )
+
     st.subheader("Introduction:")
     st.write(
         """
-    In this application, we use a logistic regression model to predict fraudulent transactions based on the Kaggle Credit Card Fraud Detection dataset. Logistic regression is a binary classification algorithm that models the probability of an input belonging to a particular class (normal or fraudulent).
+    In this application, we use a logistic regression model to predict fraudulent transactions based on the Kaggle Credit Card 
+    Fraud Detection dataset. Logistic regression is a binary classification algorithm that models the probability of an input 
+    belonging to a particular class (normal or fraudulent).
 
     The model uses the following mathematical equation to calculate the probability \( p \) of a transaction being fraudulent:
     """
@@ -78,9 +89,7 @@ def credit_card_fraud_detection():
 
     Class imbalance can impact the performance of machine learning models, as they may become biased towards predicting the majority class (normal transactions) more frequently. This makes it important to account for class imbalance when training a model for fraud detection.
 
-    In this case, 'Downsampling' technique has been used to maintain the performance of the machine learning model.
-
-    Downsampling is a technique used to balance class distribution in datasets where one class is significantly larger than the other(s). 
+    In this case, 'Downsampling' technique has been used to maintain the performance of the machine learning model. Downsampling is a technique used to balance class distribution in datasets where one class is significantly larger than the other(s). 
     
     This is particularly important when working with imbalanced datasets in machine learning, such as the credit card fraud detection dataset, where the majority of transactions are normal and only a small fraction are fraudulent.
     """
@@ -113,7 +122,6 @@ def credit_card_fraud_detection():
     classification_df = pd.DataFrame(classification_rep).transpose()
     st.table(classification_df)
 
-    
     st.write("Explanation:")
     st.write(
         """
@@ -131,11 +139,19 @@ def credit_card_fraud_detection():
     """
     )
 
+    st.subheader("Results")
     # Evaluate the model using confusion matrix and classification report
     conf_matrix = confusion_matrix(y_test, y_pred)
 
     # Plot the confusion matrix as a heatmap
-    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=['Predicted Normal', 'Predicted Fraudulent'], yticklabels=['Normal', 'Fraudulent'])
+    sns.heatmap(
+        conf_matrix,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        xticklabels=["Predicted Normal", "Predicted Fraudulent"],
+        yticklabels=["Normal", "Fraudulent"],
+    )
     plt.title("Confusion Matrix Heatmap")
     st.pyplot(plt)
 
@@ -196,4 +212,4 @@ def create_balanced_dataset(data):
 def get_features_and_target(data):
     X = data.drop(columns=["Class"])
     y = data["Class"]
-    return X, y    
+    return X, y
